@@ -11,6 +11,7 @@
 const int MAX_COUNT_OF_LINES = 10000;
 const int MAX_SYMBOLS_IN_LINE = 1000;
 const int TIMEOUT = 5000;
+
 void freeAll(unsigned int cnt, ...){
     void* pointer = &cnt + 1;
     while(cnt--){
@@ -89,6 +90,7 @@ int main(int argv,char **argc) {
     needToFree++;
 
 	//file opening
+
     fileDescriptor=open(argc[1],O_RDONLY);
     while(fileDescriptor==-1){
 	printf("wrong name of file! try again:\n");
@@ -97,6 +99,7 @@ int main(int argv,char **argc) {
     }
 
 	//file mapping
+
     lenghtOfFile = lseek(fileDescriptor,0,SEEK_END);
     if(lenghtOfFile==-1){
         perror("lseek failed");
@@ -149,9 +152,7 @@ int main(int argv,char **argc) {
 		    for(int i=0;i<line-1;i++){
 		        sumOfOffset+=tableOfOffset[i];
 		    }
-		
-		    write(2,file+sumOfOffset,tableOfOffset[line-1]);
-		    
+		    write(2,file+sumOfOffset,tableOfOffset[line-1]);		    
 		} else {
 	 	    if(line!=0){
 		        printf("wrong number of line!\n");
@@ -162,20 +163,18 @@ int main(int argv,char **argc) {
     	}
     }
 
-
 	//TIMEOUT
-    if(timeleft==0){
- 	
-	write(2,file,lenghtOfFile);
 
+    if(timeleft==0){
+	write(2,file,lenghtOfFile);
     } 
 
     
     freeAll(needToFree,tableOfOffset,nameOfFile);
     munmap(file,lenghtOfFile);
     if(close(fileDescriptor)==-1){
-            perror("can't close file");
-            return -1;
+        perror("can't close file");
+        return -1;
     }
 
     return 0;
