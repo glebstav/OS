@@ -14,6 +14,7 @@
 	char **arg_p = arguments+1;
 	if ((chpid = fork()) == 0) {
 		execvp(programm,arg_p);
+		perror("can't execute file");
  		exit(127);
 	}
 
